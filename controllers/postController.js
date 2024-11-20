@@ -3,6 +3,13 @@ const posts = require("../data/posts.js");
 //Index
 function index(req, res) {
     // res.send("Elenco dei Posts");
+    if (req.query.tag) {
+        const filteredPostByTag = posts.filter((item) => item.tags.includes(req.query.tag));
+        
+        res.json(filteredPostByTag)
+        return;
+    }
+
     res.json({
         count: posts.length,
         allPosts: posts

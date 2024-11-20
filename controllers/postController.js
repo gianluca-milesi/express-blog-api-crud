@@ -1,14 +1,26 @@
+const { query } = require("express");
 const posts = require("../data/posts.js");
 
 //Index
 function index(req, res) {
     // res.send("Elenco dei Posts");
-    if (req.query.tag) {
-        const filteredPostByTag = posts.filter((item) => item.tags.includes(req.query.tag));
-        
-        res.json(filteredPostByTag)
+
+    //Filtro per tags
+    const tag = req.query.tag;
+    if (tag) {
+        const filteredPostsByTag = posts.filter((item) => item.tags.includes(tag));
+
+        res.json(filteredPostsByTag)
         return;
-    }
+    };
+
+    //Filtro per limite
+    const limit = parseInt(req.query.limit);
+    if (limit) {
+        const filteredPostsByLimit = posts.slice(0, limit);
+        res.json(filteredPostsByLimit)
+        return;
+    };
 
     res.json({
         count: posts.length,
@@ -18,9 +30,9 @@ function index(req, res) {
 
 //Show
 function show(req, res) {
-    const id = parseInt(req.params.id);
-    // res.send(`Ecco il post con id: ${id}`);
-    const post = posts.find((item) => item.id === id);
+    const param = req.params.id;
+    // res.send(`Ecco il post con id o slug: ${param}`);
+    const post = posts.find((item) => item.id === parseInt(param) || item.slug === param);
 
     if (!post) {
         res.status(404);
@@ -54,9 +66,9 @@ function modify(req, res) {
 
 //Destroy
 function destroy(req, res) {
-    const id = parseInt(req.params.id);
-    // res.send(`Elimino il post con id: ${id}`);
-    const postIndex = posts.findIndex((post) => post.id === id);
+    const param = req.params.id;
+    // res.send(`Elimino il post con id o slug: ${param}`);
+    const postIndex = posts.findIndex((item) => item.id === parseInt(param) || item.slug === param);
 
     if (postIndex === -1) {
         res.status(404);

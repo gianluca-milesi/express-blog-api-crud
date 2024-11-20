@@ -14,6 +14,17 @@ function show(req, res) {
     const id = parseInt(req.params.id);
     // res.send(`Ecco il post con id: ${id}`);
     const post = posts.find((item) => item.id === id);
+
+    if (!post) {
+        res.status(404);
+
+        res.json({
+            error: "Post not found",
+            message: "Il post non è stato trovato"
+        })
+        return;
+    }
+
     res.json(post);
 };
 
@@ -36,8 +47,23 @@ function modify(req, res) {
 
 //Destroy
 function destroy(req, res) {
-    const id = req.params.id;
-    res.send(`Elimino il post con id: ${id}`);
+    const id = parseInt(req.params.id);
+    // res.send(`Elimino il post con id: ${id}`);
+    const postIndex = posts.findIndex((post) => post.id === id);
+
+    if (postIndex === -1) {
+        res.status(404);
+
+        res.json({
+            error: "Post not found",
+            message: "Il post non è stato trovato"
+        })
+        return;
+    };
+
+    posts.splice(postIndex, 1);
+    console.log(posts);
+    res.status(204);
 };
 
 module.exports = { index, show, store, update, modify, destroy };

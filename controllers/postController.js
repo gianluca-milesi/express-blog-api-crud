@@ -1,4 +1,3 @@
-const { query } = require("express");
 const posts = require("../data/posts.js");
 
 //Index
@@ -15,10 +14,22 @@ function index(req, res) {
     };
 
     //Filtro per limite
-    const limit = parseInt(req.query.limit);
-    if (limit) {
+    const limit = req.query.limit;
+    if (limit && (isNaN(limit) || limit <= 0)) {
+        res.status(400);
+
+        res.json({
+            error: "Limit not a number",
+            message: "Inserisci un numero valido"
+        })
+        return;
+    } else if (limit) {
         const filteredPostsByLimit = posts.slice(0, limit);
-        res.json(filteredPostsByLimit)
+
+        res.json({
+            count: filteredPostsByLimit.length,
+            filteredPostsByLimit
+        })
         return;
     };
 

@@ -60,7 +60,33 @@ function show(req, res) {
 
 //Store
 function store(req, res) {
-    res.send("Creo un nuovo post");
+    // res.send("Creo un nuovo post");
+
+    const { title, slug, content, image, tags } = req.body;
+
+    const errors = validate(req);
+
+    if (errors.length) {
+        res.status(400);
+
+        res.json({
+            error: 'Invalid request',
+            messages: errors,
+        })
+        return;
+    };
+
+    const post = {
+        title,
+        slug,
+        content,
+        image,
+        tags
+    };
+
+    posts.push(post);
+    res.status(201).send(post);
+    console.log(posts);
 };
 
 //Update
@@ -97,3 +123,34 @@ function destroy(req, res) {
 };
 
 module.exports = { index, show, store, update, modify, destroy };
+
+
+
+
+function validate(req) {
+    const { title, slug, content, image, tags } = req.body;
+
+    const errors = []
+
+    if (!title) {
+        errors.push("title is required")
+    }
+
+    if (!slug) {
+        errors.push("slug is required")
+    }
+
+    if (!content) {
+        errors.push("content is required")
+    }
+
+    if (!image) {
+        errors.push("image is required")
+    }
+
+    if (!tags) {
+        errors.push("tags is required")
+    }
+
+    return errors;
+};

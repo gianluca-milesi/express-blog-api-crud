@@ -1,4 +1,5 @@
 const posts = require("../data/posts.js");
+let lastIndex = posts.at(-1).id;
 
 //Index
 function index(req, res) {
@@ -62,9 +63,35 @@ function show(req, res) {
 function store(req, res) {
     // res.send("Creo un nuovo post");
 
-    const { title, slug, content, image, tags } = req.body;
+    // const { title, slug, content, image, tags } = req.body;
+    const title = req.body.title;
+    const slug = req.body.slug;
+    const content = req.body.content;
+    const image = req.body.image;
+    const tags = req.body.tags;
 
-    const errors = validate(req);
+    const errors = []
+
+    //Gestione degli Errori
+    if (!title) {
+        errors.push("title is required")
+    }
+
+    if (!slug) {
+        errors.push("slug is required")
+    }
+
+    if (!content) {
+        errors.push("content is required")
+    }
+
+    if (!image) {
+        errors.push("image is required")
+    }
+
+    if (!tags) {
+        errors.push("tags is required")
+    }
 
     if (errors.length) {
         res.status(400);
@@ -75,8 +102,14 @@ function store(req, res) {
         })
         return;
     };
+    
 
+    //Creazione e aggiunta del nuovo oggetto post
+
+    lastIndex++
+    
     const post = {
+        id: lastIndex,
         title,
         slug,
         content,
@@ -84,9 +117,10 @@ function store(req, res) {
         tags
     };
 
+    // console.log(posts);
     posts.push(post);
-    res.status(201).send(post);
-    console.log(posts);
+    res.send(post);
+    res.status(201);
 };
 
 //Update
@@ -130,27 +164,7 @@ module.exports = { index, show, store, update, modify, destroy };
 function validate(req) {
     const { title, slug, content, image, tags } = req.body;
 
-    const errors = []
-
-    if (!title) {
-        errors.push("title is required")
-    }
-
-    if (!slug) {
-        errors.push("slug is required")
-    }
-
-    if (!content) {
-        errors.push("content is required")
-    }
-
-    if (!image) {
-        errors.push("image is required")
-    }
-
-    if (!tags) {
-        errors.push("tags is required")
-    }
+   
 
     return errors;
 };

@@ -136,6 +136,39 @@ function update(req, res) {
     const image = req.body.image;
     const tags = req.body.tags;
 
+    const errors = []
+
+    //Gestione degli Errori
+    if (!title) {
+        errors.push("title is required")
+    }
+
+    if (!slug) {
+        errors.push("slug is required")
+    }
+
+    if (!content) {
+        errors.push("content is required")
+    }
+
+    if (!image) {
+        errors.push("image is required")
+    }
+
+    if (!tags) {
+        errors.push("tags is required")
+    }
+
+    if (errors.length) {
+        res.status(400);
+
+        res.json({
+            error: 'Invalid request',
+            messages: errors,
+        })
+        return;
+    };
+
     post.title = title;
     post.slug = slug;
     post.content = content;
@@ -143,8 +176,7 @@ function update(req, res) {
     post.tags = tags;
 
     res.json(post);
-    posts.push(post);
-    console.log(post);
+    // console.log(post);
 };
 
 //Modify

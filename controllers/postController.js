@@ -57,7 +57,7 @@ function show(req, res) {
             message: "Il post non è stato trovato"
         })
         return;
-    }
+    };
 
     //Lettura del singolo oggetto post
     res.json(post);
@@ -136,7 +136,7 @@ function update(req, res) {
             message: "Il post non è stato trovato"
         })
         return;
-    }
+    };
 
     const title = req.body.title;
     const slug = req.body.slug;
@@ -181,6 +181,7 @@ function update(req, res) {
 
     // console.log(post);
     res.json(post);
+    res.status(201);
 };
 
 
@@ -188,7 +189,7 @@ function update(req, res) {
 function modify(req, res) {
     const id = parseInt(req.params.id);
     // res.send(`Modifico il post con id: ${id}`);
-    const post = post.find((item) => item.id === id);
+    const post = posts.find((item) => item.id === id);
 
     //Gestione dell'errore sull'id
     if (!post) {
@@ -199,7 +200,7 @@ function modify(req, res) {
             message: "Il post non è stato trovato"
         })
         return;
-    }
+    };
 
     //Modifica dell'oggetto post
     const title = req.body.title;
@@ -212,17 +213,20 @@ function modify(req, res) {
         post.title = title;
     };
     if (slug) {
-        post.title = slug;
+        post.slug = slug;
     };
     if (content) {
-        post.title = content;
+        post.content = content;
     };
     if (image) {
-        post.title = image;
+        post.image = image;
     };
     if (tags) {
-        post.title = tags;
+        post.tags = tags;
     };
+
+    res.json(post);
+    res.status(201);
 };
 
 

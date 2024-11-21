@@ -102,12 +102,12 @@ function store(req, res) {
         })
         return;
     };
-    
+
 
     //Creazione e aggiunta del nuovo oggetto post
 
     lastIndex++
-    
+
     const post = {
         id: lastIndex,
         title,
@@ -125,8 +125,26 @@ function store(req, res) {
 
 //Update
 function update(req, res) {
-    const id = req.params.id;
-    res.send(`Aggiorno il post con id: ${id}`);
+    const id = parseInt(req.params.id);
+    // res.send(`Aggiorno il post con id: ${id}`);
+
+    const post = posts.find((item) => item.id === id);
+
+    const title = req.body.title;
+    const slug = req.body.slug;
+    const content = req.body.content;
+    const image = req.body.image;
+    const tags = req.body.tags;
+
+    post.title = title;
+    post.slug = slug;
+    post.content = content;
+    post.image = image;
+    post.tags = tags;
+
+    res.json(post);
+    posts.push(post);
+    console.log(post);
 };
 
 //Modify
@@ -164,7 +182,7 @@ module.exports = { index, show, store, update, modify, destroy };
 function validate(req) {
     const { title, slug, content, image, tags } = req.body;
 
-   
+
 
     return errors;
 };

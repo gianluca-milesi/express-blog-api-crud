@@ -1,7 +1,7 @@
 const posts = require("../data/posts.js");
 let lastIndex = posts.at(-1).id;
 
-//Index
+//INDEX
 function index(req, res) {
     // res.send("Elenco dei Posts");
 
@@ -34,18 +34,21 @@ function index(req, res) {
         return;
     };
 
+    //Lettura dell'array di oggetti posts
     res.json({
         count: posts.length,
         allPosts: posts
     });
 };
 
-//Show
+
+//SHOW
 function show(req, res) {
     const param = req.params.id;
     // res.send(`Ecco il post con id o slug: ${param}`);
     const post = posts.find((item) => item.id === parseInt(param) || item.slug === param);
 
+    //Gestione dell'errore sull'id
     if (!post) {
         res.status(404);
 
@@ -56,61 +59,55 @@ function show(req, res) {
         return;
     }
 
+    //Lettura del singolo oggetto post
     res.json(post);
 };
 
-//Store
+
+//STORE
 function store(req, res) {
     // res.send("Creo un nuovo post");
 
-    // const { title, slug, content, image, tags } = req.body;
     const title = req.body.title;
     const slug = req.body.slug;
     const content = req.body.content;
     const image = req.body.image;
     const tags = req.body.tags;
 
+    //Gestione degli errori sulle proprietà
     const errors = []
 
-    //Gestione degli Errori
     if (!title) {
         errors.push("title is required")
     }
-
     if (!slug) {
         errors.push("slug is required")
     }
-
     if (!content) {
         errors.push("content is required")
     }
-
     if (!image) {
         errors.push("image is required")
     }
-
     if (!tags) {
         errors.push("tags is required")
     }
-
-    if (errors.length) {
+    if (errors.length > 0) {
         res.status(400);
 
         res.json({
-            error: 'Invalid request',
+            error: "Invalid request",
             messages: errors,
         })
         return;
     };
 
-
     //Creazione e aggiunta del nuovo oggetto post
-
     lastIndex++
 
     const post = {
         id: lastIndex,
-        title,
+        title, //title = title,
         slug,
         content,
         image,
@@ -123,12 +120,23 @@ function store(req, res) {
     res.status(201);
 };
 
-//Update
+
+//UPDATE
 function update(req, res) {
     const id = parseInt(req.params.id);
     // res.send(`Aggiorno il post con id: ${id}`);
-
     const post = posts.find((item) => item.id === id);
+
+    //Gestione dell'errore sull'id
+    if (!post) {
+        res.status(404);
+
+        res.json({
+            error: "Post not found",
+            message: "Il post non è stato trovato"
+        })
+        return;
+    }
 
     const title = req.body.title;
     const slug = req.body.slug;
@@ -136,61 +144,95 @@ function update(req, res) {
     const image = req.body.image;
     const tags = req.body.tags;
 
+    //Gestione degli errori sulle proprietà
     const errors = []
 
-    //Gestione degli Errori
     if (!title) {
         errors.push("title is required")
-    }
-
+    };;
     if (!slug) {
         errors.push("slug is required")
-    }
-
+    };
     if (!content) {
         errors.push("content is required")
-    }
-
+    };
     if (!image) {
         errors.push("image is required")
-    }
-
+    };
     if (!tags) {
         errors.push("tags is required")
-    }
-
+    };
     if (errors.length) {
         res.status(400);
 
         res.json({
-            error: 'Invalid request',
+            error: "Invalid request",
             messages: errors,
         })
         return;
     };
 
+    //Aggiornamento dell'oggetto post
     post.title = title;
     post.slug = slug;
     post.content = content;
     post.image = image;
     post.tags = tags;
 
-    res.json(post);
     // console.log(post);
+    res.json(post);
 };
 
-//Modify
+
+//MODIFY
 function modify(req, res) {
-    const id = req.params.id;
-    res.send(`Modifico il post con id: ${id}`);
+    const id = parseInt(req.params.id);
+    // res.send(`Modifico il post con id: ${id}`);
+    const post = post.find((item) => item.id === id);
+
+    //Gestione dell'errore sull'id
+    if (!post) {
+        res.status(404);
+
+        res.json({
+            error: "Post not found",
+            message: "Il post non è stato trovato"
+        })
+        return;
+    }
+
+    //Modifica dell'oggetto post
+    const title = req.body.title;
+    const slug = req.body.slug;
+    const content = req.body.content;
+    const image = req.body.image;
+    const tags = req.body.tags;
+
+    if (title) {
+        post.title = title;
+    };
+    if (slug) {
+        post.title = slug;
+    };
+    if (content) {
+        post.title = content;
+    };
+    if (image) {
+        post.title = image;
+    };
+    if (tags) {
+        post.title = tags;
+    };
 };
 
-//Destroy
+
+//DESTROY
 function destroy(req, res) {
     const param = req.params.id;
     // res.send(`Elimino il post con id o slug: ${param}`);
     const postIndex = posts.findIndex((item) => item.id === parseInt(param) || item.slug === param);
 
+    //Gestione dell'errore sul parametro (id e slug)
     if (postIndex === -1) {
         res.status(404);
 
@@ -201,8 +243,9 @@ function destroy(req, res) {
         return;
     };
 
+    //Eliminazione dell'oggetto post
     posts.splice(postIndex, 1);
-    console.log(posts);
+    // console.log(posts);
     res.status(204);
 };
 
@@ -211,10 +254,15 @@ module.exports = { index, show, store, update, modify, destroy };
 
 
 
-function validate(req) {
-    const { title, slug, content, image, tags } = req.body;
 
 
-
-    return errors;
-};
+//Nuovo oggetto
+/*
+{
+  "title": "Plumcake",
+  "slug": "plumcake",
+  "content": "Il plumcake è uno dei dolci più semplici e amati, perfetto per iniziare la giornata o accompagnare una pausa pomeridiana. Con pochi ingredienti come uova, zucchero, farina e yogurt, si ottiene una consistenza soffice e un sapore delicato. Basta un pizzico di lievito e magari qualche goccia di cioccolato o una grattugiata di limone per renderlo ancora più speciale. Ecco la nostra ricetta del plumcake, pensata per portare in tavola una bontà genuina e casalinga che piacerà a tutta la famiglia.",
+  "image": "plumcake.webp",
+  "tags": ["Dolci", "Colazione", "Ricette semplici", "Ricette al forno"]
+}
+*/

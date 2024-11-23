@@ -44,23 +44,23 @@ function index(req, res) {
 
 //SHOW
 function show(req, res) {
-    const param = req.params.id;
-    // res.send(`Ecco il post con id o slug: ${param}`);
-    const post = posts.find((item) => item.id === parseInt(param) || item.slug === param);
+    // const param = req.params.id;
+    // // res.send(`Ecco il post con id o slug: ${param}`);
+    // const post = posts.find((item) => item.id === parseInt(param) || item.slug === param);
 
     //Gestione dell'errore sull'id
-    if (!post) {
-        res.status(404);
+    // if (!post) {
+    //     res.status(404);
 
-        res.json({
-            error: "Post not found",
-            message: "Il post non è stato trovato"
-        })
-        return;
-    };
+    //     res.json({
+    //         error: "Post not found",
+    //         message: "Il post non è stato trovato"
+    //     })
+    //     return;
+    // };
 
     //Lettura del singolo oggetto post
-    res.json(post);
+    res.json(req.post);
 };
 
 

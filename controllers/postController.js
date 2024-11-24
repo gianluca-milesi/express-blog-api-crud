@@ -103,20 +103,31 @@ function store(req, res) {
     // };
 
     //Creazione e aggiunta del nuovo oggetto post
-    lastIndex++
 
-    const post = {
+
+
+    // const post = {
+    //     id: lastIndex,
+    //     title, //title = title,
+    //     slug,
+    //     content,
+    //     image,
+    //     tags
+    // };
+
+    lastIndex++
+    const newPost = {
         id: lastIndex,
-        title, //title = title,
-        slug,
-        content,
-        image,
-        tags
+        title: req.body.title,
+        slug: req.body.slug,
+        content: req.body.content,
+        image: req.body.image,
+        tags: req.body.tags
     };
 
     // console.log(posts);
-    posts.push(req.post);
-    res.send(req.post);
+    posts.push(newPost);
+    res.json(newPost);
     res.status(201);
 };
 

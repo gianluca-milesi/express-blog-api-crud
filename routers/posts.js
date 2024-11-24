@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const postController = require("../controllers/postController.js");
+
+//Middlewares
 const statusError = require("../middlewares/statusError.js");
 const validateProperties = require("../middlewares/validateProperties.js");
 const modifyProperties = require("../middlewares/modifyProperties.js");

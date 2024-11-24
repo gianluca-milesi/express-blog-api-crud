@@ -11,7 +11,7 @@ function statusError(req, res, next) {
         })
         return;
     }
-    req.post = post;
+    req.post = post; //salvo il post nella req
     next();  //Nel caso l'id esista, passa avanti (postController.show)
 };
 

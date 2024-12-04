@@ -118,7 +118,7 @@ function store(req, res) {
         image: req.body.image,
         title: req.body.title,
         content: req.body.content,
-        tags: Array.isArray(req.body.tags) ? req.body.tags : req.body.tags.split(",").map(tag => tag.trim()),
+        tags: req.body.tags,
         category: req.body.category,
         published: req.body.published
     };

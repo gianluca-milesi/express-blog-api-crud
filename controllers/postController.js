@@ -35,10 +35,7 @@ function index(req, res) {
     // };
 
     //Lettura dell'array di oggetti posts
-    res.json({
-        count: posts.length,
-        allPosts: posts
-    });
+    res.json(posts);
 };
 
 

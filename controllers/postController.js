@@ -248,9 +248,9 @@ function modify(req, res) {
 
 //DESTROY
 function destroy(req, res) {
-    const param = req.params.id;
+    const id = parseInt(req.params.id);
     // res.send(`Elimino il post con id o slug: ${param}`);
-    const postIndex = posts.findIndex((item) => item.id === parseInt(param) || item.slug === param);
+    const postIndex = posts.findIndex((item) => item.id === id);
 
     // //Gestione dell'errore sul parametro (id e slug)
     // if (postIndex === -1) {
@@ -265,11 +265,12 @@ function destroy(req, res) {
 
     //Eliminazione dell'oggetto post
     posts.splice(postIndex, 1);
+    res.sendStatus(204);
     // console.log(posts);
-    res.status(204);
 };
 
 module.exports = { index, show, store, update, modify, destroy };
+
 
 
 

@@ -115,17 +115,18 @@ function store(req, res) {
     lastIndex++
     const newPost = {
         id: lastIndex,
-        title: req.body.title,
-        slug: req.body.slug,
-        content: req.body.content,
         image: req.body.image,
-        tags: req.body.tags
+        title: req.body.title,
+        content: req.body.content,
+        tags: Array.isArray(req.body.tags) ? req.body.tags : req.body.tags.split(",").map(tag => tag.trim()),
+        category: req.body.category,
+        published: req.body.published
     };
 
     // console.log(posts);
     posts.push(newPost);
-    res.json(newPost);
     res.status(201);
+    res.json(newPost);
 };
 
 

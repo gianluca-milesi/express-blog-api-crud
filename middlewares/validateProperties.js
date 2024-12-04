@@ -5,26 +5,30 @@ function validateProperties(req, res, next) {
     const post = posts.find((item) => item.id === id);
 
     const title = req.body.title;
-    const slug = req.body.slug;
-    const content = req.body.content;
     const image = req.body.image;
+    const content = req.body.content;
     const tags = req.body.tags;
+    const category = req.body.category;
+    const published = req.body.published;
 
     const errors = []
     if (!title) {
         errors.push("title is required")
     };
-    if (!slug) {
-        errors.push("slug is required")
+    if (!image) {
+        errors.push("image is required")
     };
     if (!content) {
         errors.push("content is required")
     };
-    if (!image) {
-        errors.push("image is required")
-    };
     if (!tags) {
         errors.push("tags is required")
+    };
+    if (!category) {
+        errors.push("category is required")
+    };
+    if (!published) {
+        errors.push("published  is required")
     };
     if (errors.length) {
         res.status(400);

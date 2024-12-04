@@ -16,7 +16,7 @@ router.get("/", tagFilter, limitFilter, postController.index);
 router.get("/:id", statusError, postController.show);
 
 //Store
-router.post("/", validateProperties, postController.store);
+router.post("/", postController.store);
 
 //Update
 router.put("/:id", statusError, validateProperties, postController.update);

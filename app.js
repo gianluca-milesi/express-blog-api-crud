@@ -4,11 +4,11 @@ const cors = require("cors")
 const port = 3000;
 
 app.use(cors())
+app.use(express.json());
+
+app.use(express.static("public"));
 
 const notFound = require("./middlewares/notFound.js");
-
-app.use(express.json());
-app.use(express.static("public"));
 
 const postsRouter = require("./routers/posts.js");
 app.use("/posts", postsRouter);
